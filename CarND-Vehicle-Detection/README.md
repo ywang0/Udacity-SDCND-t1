@@ -55,13 +55,13 @@ HOG features, SVM, and sliding-windows are a popular combination for image detec
 
 Note: Replacing SVM with a DNN (i.e., LeNet 5) slightly improves the accuracy, but the inference time is much longer and the false positive rate is high when applying to video implementation.
 
-** Data sets **  
+##### Data sets  
 
 The training images come from a combination of the [GTI vehicle image database](http://www.gti.ssr.upm.es/data/Vehicle_database.html), the [KITTI vision benchmark suite](http://www.cvlibs.net/datasets/kitti/), and examples extracted from the project video itself.
 
 Due to frequent false positives shown in video impelmentation, I've added ~1700 (hard negative mining + augmented) images (`./neg_mining.tar.gz`) to reduce the false positve rate.
 
-** Features Extraction **  
+##### Features Extraction  
 
 In addition to HOG features, I also added spatial features and color-histograms features with `spatial_size=32` and `hist_bins=48` to achieve higher classification accuracy. Compared to RGB, HSV and HSL, YCrCb color space yields a higher accuracy. YUV color space achieves a comparable accuracy, therefore YUV can also be used.  
 
@@ -70,7 +70,7 @@ These are functions used to extract features ( in `vehicle_detection_utils.py`):
 - `get_spatial_features()`: extract spatial features
 - `get_colorhist_features()`: extract color-histograms features
 
-** The Classifier **  
+##### The Classifier  
 
 `LinearSVC` is chosen as the classifier.  
 
@@ -148,16 +148,16 @@ Here's an example result showing the heat map from a series of frames of video, 
 
 #### Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-** Performance of HOG API **  
+##### Performance of HOG API  
 In the lessons, we used `skimage.feature.hog()` to extract HOG of an image. Though the function is convenient in terms of passing parameters and getting returned values as vector/non-vector, it is quite slow and becomes an issue when applying to videos; rendering of the video `project_video.mp4` would take hours.
 
    A quick comparison of run time on `skimage.feature.hog()` and `cv2.HOGDescriptor()` shows `cv2.HOGDescriptor()` is usually 15+ time faster than `skimage.feature.hog()`, therefore `cv2.HOGDescriptor()` is actually used in the implementation.  
    (see [notebook] cell 6)
 
-** The number of windows for searching is too big **   
+##### The number of windows for searching is too big  
 I used single scale=1.5 and step=one-cell for sliding_windows search. The number of windows for searching is more than 1700 and that makes the video processing slow. To improve the performance, the different region proposal techniques used in RPN family may be applied here. If the feature extraction time can be significantly reduced, we can add more scales to fine tuning the bounding boxes and to be able to detect more cars of various sizes.
 
-** Frames per Second Improvement **  
+##### Frames per Second Improvement  
 Currently the frame processing is too slow (~ 1.69s per frame). To get real time performance much improved, using CNN like SSD or YOLO could be a better approach for this task.
 
 ### Helpful Resources
