@@ -158,7 +158,7 @@ In the lessons, we used `skimage.feature.hog()` to extract HOG of an image. Thou
 I used single scale=1.5 and step=one-cell for sliding_windows search. The number of windows for searching is more than 1700 and that makes the video processing slow. To improve the performance, the different region proposal techniques used in RPN family may be applied here. If the feature extraction time can be significantly reduced, we can add more scales to fine tuning the bounding boxes and to be able to detect more cars of various sizes.
 
 ##### Frames per Second Improvement  
-Currently the frame processing is too slow (~ 1.69s per frame). To get real time performance much improved, using CNN like SSD or YOLO could be a better approach for this task.
+Currently the frame processing is too slow (~ 1.69s per frame on Nvidia K520). To get real time performance much improved, using CNN like SSD or YOLO could be a better approach for this task.
 
 ### Helpful Resources
 * Uacity discussion forum and slack channel
